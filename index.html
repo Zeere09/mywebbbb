@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack // Твой карьерный трекер</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-blue);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--bg-color);
+        }
+
+        /* Главный контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h1 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Сетка карточек */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1max));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #334155;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-blue { background-color: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
+        .badge-green { background-color: rgba(52, 211, 153, 0.2); color: var(--accent-green); }
+        .badge-orange { background-color: rgba(251, 146, 60, 0.2); color: var(--accent-orange); }
+
+        /* Прогресс бар */
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* Секция AI Прогноза */
+        .ai-prediction-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+            border: 1px solid #4338ca;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ai-icon {
+            font-size: 40px;
+        }
+
+        .ai-text h3 {
+            margin: 0 0 5px 0;
+            color: var(--accent-blue);
+        }
+
+        .ai-text p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">EduTrack //</div>
+        <div class="user-profile">
+            <span style="color: var(--text-muted)">Привет, Студент!</span>
+            <div class="avatar">ST</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Твой Дашборд Целей</h1>
+            <p>Отслеживай подготовку к экзаменам и наполнение портфолио в реальном времени.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Подготовка к IELTS</div>
+                    <span class="badge badge-blue">Дедлайн: 15 Ноя</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Текущий балл (пробники): 6.5</span>
+                        <span>Цель: 7.5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%; background-color: var(--accent-blue);"></div>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">🎯 Осталось подтянуть секцию: Writing</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Экзамен SAT Math</div>
+                    <span class="badge badge-green">Дедлайн: 05 Дек</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Пройдено тем: 12 / 15</span>
+                        <span>80%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%; background-color: var(--accent-green);"></div>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">📐 Следующая тема: Стереометрия</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Проекты для GitHub</div>
+                    <span class="badge badge-orange">Дедлайн: 01 Окт</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Готово проектов: 1 / 3</span>
+                        <span>33%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%; background-color: var(--accent-orange);"></div>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); margin: 0;">💻 Сейчас в работе: Этот трекер карьерного пути</p>
+            </div>
+        </div>
+
+        <div class="ai-prediction-box">
+            <div class="ai-icon">📊</div>
+            <div class="ai-text">
+                <h3>Умный Python-прогноз динамики</h3>
+                <p>На основе твоих последних пробных тестов по <strong>IELTS</strong>, текущая скорость обучения позволит тебе набрать <strong>7.0 баллов</strong> к 15 ноября. Чтобы выйти на желаемые 7.5, система рекомендует увеличить количество практических эссе до 3 в неделю.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
