@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTrack // Персонализация</title>
+    <title>EduTrack // Пошаговая настройка</title>
     <style>
         :root {
             --bg-light: #f8fafc;
@@ -26,7 +26,6 @@
             min-height: 100vh;
         }
 
-        /* Шапка сайта (скрыта на первом шаге, появится потом) */
         header {
             background-color: var(--navy-dark);
             color: white;
@@ -42,7 +41,7 @@
             letter-spacing: 1px;
         }
 
-        /* Окно опросника */
+        /* Общий контейнер для шагов опросника */
         .quiz-container {
             max-width: 550px;
             margin: auto;
@@ -54,18 +53,25 @@
             text-align: center;
         }
 
-        .quiz-container h1 {
+        /* Скрываем шаги опросника по умолчанию, кроме первого */
+        .quiz-step {
+            display: none;
+        }
+        .quiz-step.active {
+            display: block;
+        }
+
+        .quiz-container h1, .quiz-container h2 {
             color: var(--navy-dark);
             margin-top: 0;
-            font-size: 28px;
+            font-size: 26px;
         }
 
         .quiz-container p {
             color: #64748b;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        /* Стили чекбоксов (вариантов выбора) */
         .options-list {
             text-align: left;
             display: flex;
@@ -87,7 +93,6 @@
 
         .option-item:hover {
             border-color: var(--navy-light);
-            background-color: #f0fdf4; /* легкий оттенок */
             background-color: rgba(59, 130, 246, 0.04);
         }
 
@@ -99,7 +104,30 @@
             cursor: pointer;
         }
 
-        /* Кнопка */
+        /* Стили для полей ввода баллов */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--navy-dark);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: var(--navy-light);
+        }
+
         .btn-submit {
             background-color: var(--navy-dark);
             color: white;
@@ -117,7 +145,7 @@
             background-color: var(--navy-medium);
         }
 
-        /* Стили главного Дашборда (по умолчанию скрыт) */
+        /* Главный Дашборд */
         .dashboard-container {
             display: none;
             max-width: 1100px;
@@ -140,7 +168,7 @@
             padding: 24px;
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            display: none; /* Покажет только выбранные скриптом */
+            display: none;
         }
 
         .card-title {
@@ -166,7 +194,8 @@
         .progress-fill {
             height: 100%;
             background-color: var(--navy-medium);
-            width: 10%; /* Начальный прогресс */
+            width: 0%;
+            transition: width 0.5s ease-in-out;
         }
 
         .badge {
@@ -181,127 +210,171 @@
 </head>
 <body>
 
-    <!-- Шапка (появится на дашборде) -->
     <header id="main-header">
         <div class="logo">EduTrack //</div>
         <div>Профиль абитуриента</div>
     </header>
 
-    <!-- ЭКРАН 1: Опросник -->
-    <div class="quiz-container" id="quiz-screen">
-        <h1>Собери свой трекер</h1>
-        <p>Привет! Выбери направления и цели, которые тебе нужно отслеживать для поступления в университет:</p>
+    <div class="quiz-container" id="quiz-box">
         
-        <div class="options-list">
-            <label class="option-item">
-                <input type="checkbox" value="ielts"> Международный экзамен IELTS
-            </label>
-            <label class="option-item">
-                <input type="checkbox" value="sat"> Экзамен SAT (Math / Reading)
-            </label>
-            <label class="option-item">
-                <input type="checkbox" value="volunteers"> Волонтёрские часы и проекты
-            </label>
-            <label class="option-item">
-                <input type="checkbox" value="science"> Научные конкурсы и стартапы
-            </label>
-            <label class="option-item">
-                <input type="checkbox" value="olympiads"> Предметные олимпиады
-            </label>
+        <div class="quiz-step active" id="step-1">
+            <h1>Собери свой трекер</h1>
+            <p>Выбери направления, которые тебе нужно отслеживать для поступления:</p>
+            <div class="options-list">
+                <label class="option-item"><input type="checkbox" value="ielts" id="check-ielts"> Международный экзамен IELTS</label>
+                <label class="option-item"><input type="checkbox" value="sat" id="check-sat"> Экзамен SAT</label>
+                <label class="option-item"><input type="checkbox" value="volunteers" id="check-volunteers"> Волонтёрские часы</label>
+                <label class="option-item"><input type="checkbox" value="science" id="check-science"> Научные проекты и стартапы</label>
+            </div>
+            <button class="btn-submit" onclick="goToScoresStep()">Далее (Ввод результатов) →</button>
         </div>
 
-        <button class="btn-submit" onclick="generateDashboard()">Создать мой дашборд →</button>
+        <div class="quiz-step" id="step-score-ielts">
+            <h2>Результаты IELTS</h2>
+            <p>Укажи свои текущие стартовые показатели:</p>
+            <div class="input-group">
+                <label for="input-ielts">Твой последний балл на Mock-тесте (от 0 до 9.0):</label>
+                <input type="number" id="input-ielts" min="0" max="9" step="0.5" placeholder="Например: 6.0">
+            </div>
+            <button class="btn-submit" onclick="nextSubStep()">Далее →</button>
+        </div>
+
+        <div class="quiz-step" id="step-score-sat">
+            <h2>Результаты SAT</h2>
+            <p>Укажи свои текущие стартовые показатели:</p>
+            <div class="input-group">
+                <label for="input-sat">Твой балл на пробнике (от 400 до 1600):</label>
+                <input type="number" id="input-sat" min="400" max="1600" placeholder="Например: 1150">
+            </div>
+            <button class="btn-submit" onclick="nextSubStep()">Далее →</button>
+        </div>
+
+        <div class="quiz-step" id="step-score-volunteers">
+            <h2>Волонтёрские часы</h2>
+            <p>Сколько часов у тебя уже есть на руках?</p>
+            <div class="input-group">
+                <label for="input-volunteers">Количество набранных часов (Цель: 100):</label>
+                <input type="number" id="input-volunteers" min="0" placeholder="Например: 25">
+            </div>
+            <button class="btn-submit" onclick="nextSubStep()">Далее →</button>
+        </div>
+
+        <div class="quiz-step" id="step-score-science">
+            <h2>Научные проекты / IT-стартапы</h2>
+            <p>Оцени готовность твоего проекта на данный момент:</p>
+            <div class="input-group">
+                <label for="input-science">Процент готовности проекта (от 0% до 100%):</label>
+                <input type="number" id="input-science" min="0" max="100" placeholder="Например: 40">
+            </div>
+            <button class="btn-submit" onclick="nextSubStep()">Далее →</button>
+        </div>
+
     </div>
 
-    <!-- ЭКРАН 2: Главный Дашборд -->
     <div class="dashboard-container" id="dashboard-screen">
         <h2>Твой персональный трек поступления</h2>
-        <p style="color: #64748b;">Все выбранные цели в одном месте. Заполняй прогресс по мере подготовки.</p>
+        <p style="color: #64748b;">Данные успешно обновлены на основе твоих текущих моков.</p>
 
         <div class="dashboard-grid">
-            <!-- Карточка IELTS -->
             <div class="card" id="card-ielts">
                 <div class="card-title">📊 Подготовка к IELTS</div>
                 <div class="progress-box">
-                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Целевой балл: 7.5</p>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
+                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Твой балл: <span id="dash-text-ielts">0</span> / 9.0 (Цель: 7.5)</p>
+                    <div class="progress-bar"><div class="progress-fill" id="dash-bar-ielts"></div></div>
                 </div>
-                <span class="badge">Текущий фокус: Секция Writing</span>
+                <span class="badge">Рекомендация: Делай упор на слабые секции</span>
             </div>
 
-            <!-- Карточка SAT -->
             <div class="card" id="card-sat">
                 <div class="card-title">📐 Экзамен SAT</div>
                 <div class="progress-box">
-                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Целевой балл: 1500+</p>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 30%;"></div></div>
+                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Твой балл: <span id="dash-text-sat">0</span> / 1600 (Цель: 1500+)</p>
+                    <div class="progress-bar"><div class="progress-fill" id="dash-bar-sat"></div></div>
                 </div>
-                <span class="badge">Текущий фокус: Алгебра и функции</span>
+                <span class="badge">Рекомендация: Прокачивай тайм-менеджмент на секциях</span>
             </div>
 
-            <!-- Карточка Волонтёрство -->
             <div class="card" id="card-volunteers">
                 <div class="card-title">🌱 Волонтёрская деятельность</div>
                 <div class="progress-box">
-                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Набрано: 40 / 100 часов</p>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Набрано: <span id="dash-text-volunteers">0</span> / 100 часов</p>
+                    <div class="progress-bar"><div class="progress-fill" id="dash-bar-volunteers"></div></div>
                 </div>
-                <span class="badge">Ближайшее: Организация соц. лагеря</span>
+                <span class="badge">Рекомендация: Ищи локальные социальные проекты</span>
             </div>
 
-            <!-- Карточка Наука -->
             <div class="card" id="card-science">
                 <div class="card-title">🔬 Научные проекты и IT-конкурсы</div>
                 <div class="progress-box">
-                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Прогресс упаковки идеи: 70%</p>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
+                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Прогресс: <span id="dash-text-science">0</span>%</p>
+                    <div class="progress-bar"><div class="progress-fill" id="dash-bar-science"></div></div>
                 </div>
-                <span class="badge">Статус: Доработка кода и GitHub репозитория</span>
-            </div>
-
-            <!-- Карточка Олимпиады -->
-            <div class="card" id="card-olympiads">
-                <div class="card-title">🏆 Предметные олимпиады</div>
-                <div class="progress-box">
-                    <p style="margin: 0 0 5px 0; font-size: 14px; color: #64748b;">Подготовка к этапам</p>
-                    <div class="progress-bar"><div class="progress-fill" style="width: 15%;"></div></div>
-                </div>
-                <span class="badge">Материалы: Разбор прошлых лет</span>
+                <span class="badge">Рекомендация: Оформи архитектуру кода на GitHub</span>
             </div>
         </div>
     </div>
 
-    <!-- Логика переключения страниц на JavaScript -->
     <script>
-        function generateDashboard() {
-            // Находим все выбранные чекбоксы
-            const checkboxes = document.querySelectorAll('.options-list input[type="checkbox"]');
-            let hasSelection = false;
+        let selectedSubjects = [];
+        let currentSubStepIndex = 0;
 
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    hasSelection = true;
-                    // Находим соответствующую карточку по ID и делаем её видимой
-                    const cardId = 'card-' + checkbox.value;
-                    const cardElement = document.getElementById(cardId);
-                    if (cardElement) {
-                        cardElement.style.display = 'block';
-                    }
-                }
-            });
+        function goToScoresStep() {
+            // Смотрим, что выбрано
+            if (document.getElementById('check-ielts').checked) selectedSubjects.push('ielts');
+            if (document.getElementById('check-sat').checked) selectedSubjects.push('sat');
+            if (document.getElementById('check-volunteers').checked) selectedSubjects.push('volunteers');
+            if (document.getElementById('check-science').checked) selectedSubjects.push('science');
 
-            if (!hasSelection) {
-                alert("Пожалуйста, выберите хотя бы один предмет для трекинга!");
+            if (selectedSubjects.length === 0) {
+                alert("Пожалуйста, выбери хотя бы один предмет!");
                 return;
             }
 
-            // Прячем опросник
-            document.getElementById('quiz-screen').style.display = 'none';
-
-            // Показываем шапку и дашборд
-            document.getElementById('main-header').style.display = 'flex';
-            document.getElementById('dashboard-screen').style.display = 'block';
+            // Прячем шаг 1
+            document.getElementById('step-1').classList.remove('active');
+            
+            // Запускаем цепочку вопросов
+            currentSubStepIndex = 0;
+            showNextScoreQuestion();
         }
-    </script>
-</body>
-</html>
+
+        function showNextScoreQuestion() {
+            if (currentSubStepIndex < selectedSubjects.length) {
+                // Показываем карточку вопроса для текущего выбранного предмета
+                const currentSubject = selectedSubjects[currentSubStepIndex];
+                document.getElementById('step-score-' + currentSubject).classList.add('active');
+            } else {
+                // Если вопросы закончились, переходим к финалу — дашборду
+                finishOnboarding();
+            }
+        }
+
+        function nextSubStep() {
+            // Прячем текущий активный вопрос
+            const currentSubject = selectedSubjects[currentSubStepIndex];
+            document.getElementById('step-score-' + currentSubject).classList.remove('active');
+            
+            // Переходим к следующему индексу
+            currentSubStepIndex++;
+            showNextScoreQuestion();
+        }
+
+        function finishOnboarding() {
+            // Скрываем весь блок опросника полностью
+            document.getElementById('quiz-box').style.display = 'none';
+
+            // Наполняем дашборд данными из полей ввода и рассчитываем % прогресса
+            selectedSubjects.forEach(subject => {
+                document.getElementById('card-' + subject).style.display = 'block';
+                
+                let val = parseFloat(document.getElementById('input-' + subject).value) || 0;
+                let percent = 0;
+
+                if (subject === 'ielts') {
+                    document.getElementById('dash-text-ielts').innerText = val;
+                    percent = (val / 9.0) * 100;
+                } else if (subject === 'sat') {
+                    document.getElementById('dash-text-sat').innerText = val;
+                    percent = (val / 1600) * 100;
+                } else if (subject === 'volunteers') {
+                    document.getElementById('dash-
